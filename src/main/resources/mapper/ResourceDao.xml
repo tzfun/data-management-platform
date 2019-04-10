@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="demo.sicau.datamanagementplatform.dao.ResourceDao">
+
+    <resultMap id="ResourceArticleMap" type="demo.sicau.datamanagementplatform.entity.POJO.VO.ResourceArticleVO">
+        <collection property="resource" ofType="demo.sicau.datamanagementplatform.entity.POJO.PO.ResourcePO">
+            <id column="resource_id" jdbcType="VARCHAR" property="id"/>
+            <result column="type" jdbcType="VARCHAR" property="type"/>
+            <result column="title" jdbcType="VARCHAR" property="title"/>
+            <result column="summary" jdbcType="VARCHAR" property="summary"/>
+            <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+            <result column="file" jdbcType="VARCHAR" property="fileUrl"/>
+            <result column="create_time" jdbcType="TIMESTAMP" javaType="String" property="createTime"/>
+            <result column="update_time" jdbcType="TIMESTAMP" javaType="String" property="updateTime"/>
+            <result column="see_num" jdbcType="INTEGER" property="seeNum"/>
+            <result column="download_num" jdbcType="INTEGER" property="downloadNum"/>
+            <result column="file_name" jdbcType="VARCHAR" property="fileName"/>
+            <result column="file_size" jdbcType="BIGINT" property="fileSize"/>
+            <result column="file_type" jdbcType="VARCHAR" property="fileType"/>
+            <result column="file_full_type" jdbcType="VARCHAR" property="fileFullType"/>
+        </collection>
+        <collection property="author" ofType="demo.sicau.datamanagementplatform.entity.DTO.User">
+            <id column="user_id" jdbcType="VARCHAR" property="id"/>
+            <result column="account" jdbcType="VARCHAR" property="account"/>
+            <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="ResourceListMap" type="demo.sicau.datamanagementplatform.entity.POJO.VO.ResourceListVO">
+        <collection property="author" ofType="demo.sicau.datamanagementplatform.entity.DTO.User">
+            <id column="user_id" jdbcType="VARCHAR" property="id"/>
+            <result column="account" jdbcType="VARCHAR" property="account"/>
+            <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        </collection>
+        <collection property="resource" ofType="demo.sicau.datamanagementplatform.entity.POJO.PO.ResourcePO">
+            <id column="resource_id" jdbcType="VARCHAR" property="id"/>
+            <result column="img" jdbcType="VARCHAR" property="imgUrl"/>
+            <result column="type" jdbcType="VARCHAR" property="type"/>
+            <result column="title" jdbcType="VARCHAR" property="title"/>
+            <result column="summary" jdbcType="VARCHAR" property="summary"/>
+            <result column="create_time" jdbcType="TIMESTAMP" javaType="String" property="createTime"/>
+            <result column="update_time" jdbcType="TIMESTAMP" javaType="String" property="updateTime"/>
+            <result column="see_num" jdbcType="INTEGER" property="seeNum"/>
+            <result column="download_num" jdbcType="INTEGER" property="downloadNum"/>
+            <result column="file_size" jdbcType="INTEGER" property="fileSize"/>
+        </collection>
+    </resultMap>
+
+    <insert id="insertResource" parameterType="demo.sicau.datamanagementplatform.entity.DTO.Resource">
+        insert into resource_tb(id,title,summary,introduction,`type`,img_url,file_url,user_id,
+        file_name,file_size,file_type,file_full_type)
+        values (#{resource.id},#{resource.title},#{resource.summary},#{resource.introduction},#{resource.type},
+        #{resource.imgUrl},#{resource.fileUrl},#{userId},
+        #{resource.fileName},#{resource.fileSize},#{resource.fileType},#{resource.fileFullType})
+    </insert>
+    <update id="updateSeeNum">
+        update resource_tb
+        set see_num = see_num + 1
+        where id = #{id}
+    </update>
+    <update id="updateDownloadNum">
+        update resource_tb
+        set download_num = download_num +1
+        where id=#{id}
+    </update>
+    <update id="updatePassStatus">
+        update resource_tb
+        set has_pass=#{hasPass},update_time=current_timestamp()
+        where id = #{id}
+    </update>
+    <delete id="deleteByUserIdAndId">
+        delete from resource_tb
+        where id=#{id} and user_id = #{userId}
+    </delete>
+    <delete id="deleteById">
+        delete from resource_tb
+        where id=#{id}
+    </delete>
+    <select id="selectResourceArticleById"
+            resultType="demo.sicau.datamanagementplatform.entity.POJO.VO.ResourceArticleVO" resultMap="ResourceArticleMap">
+        select u.id as user_id,u.real_name as real_name,u.account as account,
+        r.id as resource_id,r.title as title,r.summary as summary,r.introduction as introduction,
+        r.type as `type`,r.file_url as file,r.create_time as create_time,
+        r.update_time as update_time,r.see_num as see_num,r.download_num as download_num,
+        r.file_name as file_name,r.file_size as file_size,r.file_type as file_type,r.file_full_type as file_full_type
+        from resource_tb as r join user_tb as u
+        on r.user_id = u.id and r.id=#{id}
+    </select>
+    <select id="selectResourceListByType"
+            resultType="demo.sicau.datamanagementplatform.entity.POJO.VO.ResourceListVO" resultMap="ResourceListMap">
+        select u.id as user_id,u.real_name as real_name,u.account as account,
+        r.id as resource_id,r.title as title,r.summary as summary,r.type as `type`,
+        r.create_time as create_time,r.img_url as img,r.file_size as file_size,
+        r.update_time as update_time,r.see_num as see_num,r.download_num as download_num
+        from resource_tb as r join user_tb as u
+        on r.user_id = u.id and r.has_pass = 1
+        <if test="type != 'all'">
+            and r.type=#{type}
+        </if>
+        order by r.create_time desc,r.update_time desc
+        limit #{page},#{pageSize}
+    </select>
+    <select id="selectResourceList"
+            resultType="demo.sicau.datamanagementplatform.entity.POJO.VO.ResourceListVO" resultMap="ResourceListMap">
+        select u.id as user_id,u.real_name as real_name,u.account as account,
+        r.id as resource_id,r.title as title,r.summary as summary,
+        r.type as `type`,r.create_time as create_time,r.img_url as img,r.file_size as file_size,
+        r.update_time as update_time,r.see_num as see_num,r.download_num as download_num
+        from resource_tb as r join user_tb as u
+        on r.user_id = u.id and r.has_pass = 1
+        order by r.create_time desc,r.update_time desc
+        limit #{page},#{pageSize}
+    </select>
+    <select id="countResource" resultType="java.lang.Integer">
+        select count(id) from resource_tb where has_pass=1
+        <if test="type != 'all'">
+            and type=#{type}
+        </if>
+    </select>
+    <select id="selectResourceListOrderByDownload"
+            resultType="demo.sicau.datamanagementplatform.entity.POJO.VO.ResourceListVO" resultMap="ResourceListMap">
+        select u.id as user_id,u.real_name as real_name,u.account as account,
+        r.id as resource_id,r.title as title,r.summary as summary,
+        r.type as `type`,r.create_time as create_time,r.img_url as img,r.file_size as file_size,
+        r.update_time as update_time,r.see_num as see_num,r.download_num as download_num
+        from resource_tb as r join user_tb as u
+        on r.user_id = u.id and r.has_pass = 1
+        order by r.download_num desc,r.create_time desc,r.update_time desc
+        limit #{page},#{pageSize}
+    </select>
+    <select id="selectResourceByUserId"
+            resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.ResourcePO">
+        select * from resource_tb order by create_time desc limit #{page},#{pageSize};
+    </select>
+    <select id="selectTotalByUserId" resultType="java.lang.Integer">
+        select count(id) from resource_tb where user_id=#{userId}
+    </select>
+    <select id="selectResourceById" resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.ResourcePO">
+        select * from resource_tb where id=#{id}
+    </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        select count(id) from resource_tb;
+    </select>
+    <select id="selectAll" resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.ResourcePO">
+        select * from resource_tb order by create_time desc limit #{page},#{pageSize}
+    </select>
+</mapper>

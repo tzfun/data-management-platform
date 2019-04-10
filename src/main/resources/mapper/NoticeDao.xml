@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="demo.sicau.datamanagementplatform.dao.NoticeDao">
+
+    <insert id="insert" parameterType="demo.sicau.datamanagementplatform.entity.DTO.Notice">
+        insert into notice_tb(
+        id,user_id,title,content,long_term,summary
+        ) values (
+        #{notice.id},
+        #{notice.userId},
+        #{notice.title},
+        #{notice.content},
+        #{notice.longTerm},
+        #{notice.summary}
+        )
+    </insert>
+    <insert id="addSeeNum">
+        update notice_tb set see_num = see_num + 1 where id=#{id}
+    </insert>
+    <delete id="deleteById">
+        delete from notice_tb where id = #{id}
+    </delete>
+    <select id="selectById" resultType="demo.sicau.datamanagementplatform.entity.DTO.Notice">
+        select * from notice_tb where id=#{id}
+    </select>
+    <select id="selectLongTermNoticeByNum" resultType="demo.sicau.datamanagementplatform.entity.DTO.Notice">
+        select * from notice_tb where long_term = 1 order by create_time desc limit 0,#{longTermNum}
+    </select>
+    <select id="selectShortTermNoticeByNum" resultType="demo.sicau.datamanagementplatform.entity.DTO.Notice">
+        select * from notice_tb where long_term = 0 order by create_time desc limit 0,#{shortTermNum}
+    </select>
+    <select id="select" resultType="demo.sicau.datamanagementplatform.entity.DTO.Notice">
+        select * from notice_tb order by long_term desc ,create_time desc limit #{page},#{pageSize}
+    </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        select count(id) from notice_tb
+    </select>
+</mapper>

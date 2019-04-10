@@ -1,0 +1,23 @@
+.card{
+    border:none;
+}
+#articleContent img{
+    max-width: 100%;
+}
+#articleContent{
+    padding: 40px 20px;
+    background: #fff;
+    margin: 40px 0;
+}
+.article-tag{
+    color: white;
+    font-size: 14px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin: 10px;
+    background: #2c3848;
+    display: inline-block;
+}
+#articleTags{
+    margin:20px 0;
+}

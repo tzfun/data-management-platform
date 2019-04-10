@@ -1,0 +1,23 @@
+.ck-content {
+    min-height: 400px;
+}
+.file-info{
+    color: #5b006f;
+    font-weight: 700;
+}
+#chooseImg{
+    /*max-width: 200px;*/
+    cursor: pointer;
+    border-radius: 5px;
+    /*border: 2px dotted #207e82;*/
+}
+.progress-model{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    left: 0;
+    top: 0;
+}

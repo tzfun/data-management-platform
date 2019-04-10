@@ -1,0 +1,76 @@
+server:
+  port: 80
+  host:  # 服务器地址
+logging:
+  file: log/data-management-platform.log
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/resource_platform_db?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT
+      username: root
+      password: 1246886075
+      # 下面为连接池的补充设置，应用到上面所有数据源中
+      # 初始化大小，最小，最大
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall #,log4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      slowSqlMillis: 5000
+      # 合并多个DruidDataSource的监控数据
+      useGlobalDataSourceStat: true
+  # redis配置
+  redis:
+    # Redis数据库索引，默认0
+    database: 1
+    # Redis服务器地址
+    host: localhost
+    # Redis服务器端口号
+    port: 6379
+    # Redis密码
+    password:
+    jedis:
+      pool:
+        # 连接池最大连接数
+        max-active: 8
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1ms
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池中的最小空闲连接
+        min-idle: 0
+    # 连接超时时间（毫秒）
+    timeout: 5000ms
+    #redis集群配置
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+  resources:
+    static-locations: file:${file.img.location},file:${file.resource.location}, classpath:/static/,classpath:/resources/
+  mvc:
+    static-path-pattern: /**
+#    cluster:
+#      nodes: 192.168.177.128:7001,192.168.177.128:7002,192.168.177.128:7003
+#      max-redirects: 3
+file:
+  img:
+    location: C:/Users/TZPlay/desktop/data-management-plaform/article-img # 图片文件存储在本地的目录
+  resource:
+    location: C:/Users/TZPlay/desktop/data-management-plaform/resource # 资源文件存储在本地的目录

@@ -1,0 +1,17 @@
+#articleContent img{
+    max-width: 100%;
+}
+#articleContent{
+    padding: 40px 20px;
+    background: #fff;
+    margin: 40px 0;
+}
+#download{
+    margin-top: 36px;
+    width: 165px;
+    border-radius: 26px;
+}
+.file-info em{
+    font-weight: 700;
+    color: #5b006f;
+}

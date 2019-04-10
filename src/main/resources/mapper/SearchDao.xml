@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="demo.sicau.datamanagementplatform.dao.SearchDao">
+
+    <select id="selectNotice" resultType="demo.sicau.datamanagementplatform.entity.DTO.Notice">
+        select id,title,summary,create_time,long_term
+        from `notice_tb` WHERE CONCAT(`title`,`content`,`summary`) LIKE #{keyword}
+    </select>
+    <select id="selectResource" resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.ResourcePO">
+        select id,title,summary,create_time,`type`
+        from `resource_tb` WHERE has_pass=1 and  CONCAT(`title`,`summary`,`type`,`file_name`) LIKE #{keyword}
+    </select>
+    <select id="selectArticles" resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.ArticlePO">
+        select id,title,summary,create_time,`tags` as str_tags
+        from `article_tb` WHERE has_pass=1 and  CONCAT(`title`,`summary`,`tags`) LIKE #{keyword}
+    </select>
+</mapper>

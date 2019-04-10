@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="demo.sicau.datamanagementplatform.dao.UserDao">
+    <insert id="insertUserByAccountAndPassword">
+        insert into user_tb(id,account,password) values (#{id},#{account},#{password})
+    </insert>
+    <insert id="insertUser">
+        insert into user_tb(id,account,password,sex
+        <if test="userPO.realName != null">
+            ,real_name
+        </if>
+        <if test="userPO.sicauId != null">
+            ,sicau_id
+        </if>
+        <if test="userPO.email != null">
+            ,email
+        </if>
+        <if test="userPO.telephone != null">
+            ,telephone
+        </if>
+          <if test="userPO.website != null">
+              ,website
+          </if>
+        )
+        values (#{userPO.id},#{userPO.account},#{userPO.password},#{userPO.sex}
+        <if test="userPO.realName != null">
+            ,#{userPO.realName}
+        </if>
+        <if test="userPO.sicauId != null">
+            ,#{userPO.sicauId}
+        </if>
+        <if test="userPO.email != null">
+            ,#{userPO.email}
+        </if>
+        <if test="userPO.telephone != null">
+            ,#{userPO.telephone}
+        </if>
+        <if test="userPO.website != null">
+            ,#{userPO.website}
+        </if>
+        )
+    </insert>
+    <update id="updateUser" parameterType="demo.sicau.datamanagementplatform.entity.DTO.User">
+        update user_tb set
+        <if test="user.realName != null">
+            real_name = #{user.realName},
+        </if>
+        <if test="user.sicauId != null">
+            sicau_id = #{user.sicauId},
+        </if>
+        <if test="user.email != null">
+            email = #{user.email},
+        </if>
+        <if test="user.telephone != 0">
+            telephone = #{user.telephone},
+        </if>
+        <if test="user.website != null">
+            website = #{user.website},
+        </if>
+        update_time = CURRENT_TIMESTAMP(),
+        sex = #{user.sex}
+        where id=#{user.id}
+    </update>
+    <update id="updatePassword">
+        update user_tb set password = #{password},update_time=CURRENT_TIMESTAMP() where id = #{id}
+    </update>
+    <delete id="deleteUserById">
+        delete from user_tb where id=#{id}
+    </delete>
+    <delete id="batchDeleteUserById" parameterType="java.util.ArrayList">
+        delete from user_tb where
+        <foreach collection="list" item="id" separator="or">
+            id=#{id}
+        </foreach>
+    </delete>
+
+    <select id="selectAllUser" resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.UserPO">
+        select * from user_tb;
+    </select>
+    <select id="selectUserByAccountAndPassword"
+            resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.UserPO">
+        select * from user_tb where account=#{account} and password=#{password}
+    </select>
+    <select id="selectUserByAccount" resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.UserPO">
+        select id,account from user_tb where account=#{account}
+    </select>
+    <select id="selectUserById" resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.UserPO">
+        select * from
+(select * from user_tb where id=#{id}) as t_1
+left join
+(select role_name as role
+from user_role_tb as u_r
+  join role_tb as r on u_r.role_id = r.id
+                         and u_r.user_id = #{id}) as t_2
+  on 1=1;
+    </select>
+    <select id="countUser" resultType="java.lang.Integer">
+        select count(id) from user_tb;
+    </select>
+    <select id="selectUserByPagination" resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.UserPO">
+        select u.*,t.role_name as role from user_tb as u
+left join (select user_id ,role_name from user_role_tb as u_r join role_tb r on u_r.role_id = r.id) as t
+on t.user_id = u.id order by create_time desc limit #{page},#{pageSize};
+    </select>
+</mapper>

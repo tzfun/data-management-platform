@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+    <link rel="stylesheet" href="vendors/bootstrap-4.0.0-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="vendors/jquery/jquery-confirm.min.css">
+    <link rel="stylesheet" href="css/login.css">
+
+    <link rel="shortcut icon" href="images/icon/logo.png">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="login-box col-12 col-sm-12 col-md-6 col-lg-4">
+            <h3>Resource management system</h3>
+            <p>Welcome to login</p>
+            <div class="form-container">
+                <form id="loginForm">
+                    <div class="input-group">
+                        <input type="text" name="account" class="input-group beifeng-input" placeholder="Please input your account.">
+                    </div>
+                    <div class="input-group">
+                        <input type="password" name="password" class="input-group beifeng-input" placeholder="Please input your password.">
+                    </div>
+                    <div class="input-group">
+                        <div class="col-6 col-sm-6 col-md-6 col-sm-6 col-lg-6">
+                            <input type="text" name="verifyCode" class="beifeng-input" placeholder="Verify code">
+                        </div>
+                        <div class="col-6 col-sm-6 col-md-6 col-sm-6 col-lg-6" id="verifyCodeImg" align="right"></div>
+                    </div>
+                    <!--<div class="input-group">-->
+                        <!--<div class="custom-control custom-radio custom-control-inline">-->
+                            <!--<input type="radio" id="customRadioInline1" name="role" value="0" class="custom-control-input" checked>-->
+                            <!--<label class="custom-control-label" for="customRadioInline1">I'm User</label>-->
+                        <!--</div>-->
+                        <!--<div class="custom-control custom-radio custom-control-inline">-->
+                            <!--<input type="radio" id="customRadioInline2" name="role" value="1" class="custom-control-input">-->
+                            <!--<label class="custom-control-label" for="customRadioInline2">I'm Admin</label>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="input-group">
+                        <button class="btn btn-outline-secondary beifeng-button" type="button" onclick="checkLoginForm()">Login</button>
+                    </div>
+                    <div class="text-right">
+                        <a href="register.html" class="btn-link">Register now</a>
+                    </div>
+                    <div class="text-right">
+                        <small class="text-muted">
+                            Don't have an account yet? Register now!
+                        </small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="vendors/jquery/jquery-3.3.1.min.js"></script>
+<script src="vendors/jquery/jquery.cookie.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="vendors/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
+<script src="vendors/jquery/jquery-confirm.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>

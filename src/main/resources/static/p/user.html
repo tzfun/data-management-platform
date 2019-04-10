@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Homepage——Resource Platform</title>
+    <link rel="stylesheet" href="../vendors/bootstrap-4.0.0-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../vendors/jquery/jquery-confirm.min.css">
+    <link rel="stylesheet" href="../vendors/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../vendors/bootstarp-table/bootstrap-table.min.css">
+    <link rel="stylesheet" href="../css/common.css">
+
+    <link rel="shortcut icon" href="../images/icon/logo.png">
+</head>
+<body>
+<!--导航栏-->
+<nav class="navbar navbar-light navbar-expand-md" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="../index.html">
+        <img src="../images/icon/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        E Resource
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="../index.html">Home </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="../resource.html?t=article">Articles</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="../resource.html">Resources</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="../website.html">More link</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="../about.html">About</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0" action="../search.html" method="get">
+            <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <div class="btn-group" style="margin-right: 40px">
+            <button type="button" class="btn btn-link dropdown-toggle" id="headerInfoTitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Not Login
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" id="userInfoContainer">
+                <button class="dropdown-item" type="button" onclick="location.href='/p/homepage.html'">Homepage</button>
+                <button class="dropdown-item" type="button" onclick="login()">Login</button>
+            </div>
+        </div>
+    </div>
+</nav>
+<!--导航栏-->
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-11">
+            <div class="row">
+                <div class="col-md-3">
+                    <div style="padding: 20px 5px">
+                        <img src="../images/head.png" class="rounded mx-auto d-block" alt="...">
+                        <h1 class="display-4" style="text-align: center">Welcome!</h1>
+                    </div>
+                    <ul class="list-group list-group-flush" id="permissionButtonList">
+                        <!-- 公共权限部分-->
+                        <li class="list-group-item"><a href="homepage.html">Personal Center</a></li>
+                        <li class="list-group-item"><a href="personal-settings.html">Personal Settings</a></li>
+                        <li class="list-group-item"><a href="upload-resource.html">Upload Resource</a></li>
+                        <li class="list-group-item"><a href="write-articles.html">Write Articles</a></li>
+
+                        <!-- 权限分配部分 -->
+                        <!--
+                        <li class="list-group-item"><a href="user.html">Users Management</a></li>
+                        <li class="list-group-item"><a href="resource.html">Resource Management</a></li>
+                        <li class="list-group-item"><a href="permission.html">Permission Management</a></li>
+                        <li class="list-group-item"><a href="message.html">Messages Management</a></li>
+                        <li class="list-group-item"><a href="notice.html">Notice Management</a></li>
+                        <li class="list-group-item"><a href="system.html">System Settings</a></li>
+                        -->
+                    </ul>
+                </div>
+                <div class="col-md-9">
+                    <h1 class="display-4">User Manage</h1>
+                    <div class="row">
+                        <!-- 工具容器 -->
+                        <div id="toolbar" class="btn-group">
+                            <button id="btn_add" type="button" class="btn btn-default" onclick="addUser();">
+                                <i class="fa fa-plus" aria-hidden="true"></i>新增
+                            </button>
+                            <!--<button id="btn_delete" type="button" class="btn btn-danger" onclick="batchDelete();">-->
+                                <!--<i class="fa fa-trash" aria-hidden="true"></i>批量删除-->
+                            <!--</button>-->
+                        </div>
+                        <div class=table-responsive" style="    width: 100%;">
+                            <table id="userTable" class="table text-nowrap table-striped" style="width:100%"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="footer">
+    <div class="row justify-content-center" style="margin-right: 0">
+        <div class="row col-md-10 justify-content-center">
+            <div class="col-md-3 col-11">
+                <h4 class="footer-title">
+                    <img src="../images/icon/link.png" alt="" class="footer-img">
+                    Friendship link
+                </h4>
+                <ul>
+                    <li class="link-list">
+                        <a href="http://www.sicau.edu.cn" target="_blank">四川农业大学</a>
+                    </li>
+                    <li class="link-list">
+                        <a href="http://xxgc.sicau.edu.cn" target="_blank">信息工程学院</a>
+                    </li>
+                    <li class="link-list">
+                        <a href="http://www.wingstudio.org" target="_blank">WingStudio</a>
+                    </li>
+                    <li class="link-list">
+                        <a href="https://vr.beifengtz.com" target="_blank">VR360</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-11">
+                <h4 class="footer-title">
+                    <img src="../images/icon/link1.png" alt="" class="footer-img">
+                    Site link
+                </h4>
+                <ul>
+                    <li class="link-list">
+                        <a href="../index.html">Home</a>
+                    </li>
+                    <li class="link-list">
+                        <a href="../resource.html">Resource</a>
+                    </li>
+                    <li class="link-list">
+                        <a href="../about.html">About</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-11">
+                <h4 class="footer-title">
+                    <img src="../images/icon/about.png" alt="" class="footer-img">
+                    About
+                </h4>
+                <p class="footer-p" style="padding: 0 30px;">
+                    This is a resource management platform.Development of Information Engineering College of Sichuan Agricultural Uniersity.The platform is used for resource sharing.Here you can easily find the resource files you want.If you want to know more about the platform, please click
+                    <a href="../about.html"><u>more</u></a>
+                </p>
+            </div>
+            <div class="col-md-3 col-11">
+                <h4 class="footer-title">
+                    <img src="../images/icon/concat.png" alt="" class="footer-img">
+                    Concat
+                </h4>
+                <ul>
+                    <li class="link-list" style="margin:20px 0;">
+                        <a href="#">信息工程学院物联网工程系</a>
+                    </li>
+                    <li class="link-list" style="margin: 20px 0;">
+                        <a href="mailto:1246886075@qq.com">1246886075@qq.com</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <p class="copy-p">
+        &copy; CopyRight 2018 物联网工程系 | Powered By <a href="http://www.beifengtz.com">beifengtz</a>
+    </p>
+</footer>
+<!-- User Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalTitle">User Modal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><b>Account</b> *</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="account" required class="form-control" placeholder="Account ...">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><b>Password</b> *</label>
+                        <div class="col-sm-10">
+                            <input type="password" name="password" required class="form-control" placeholder="Password ...">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><b>Sex</b></label>
+                        <div class="col-sm-10">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="boyRadio" name="sex" value="0" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="boyRadio">Boy</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="girlRadio" name="sex" value="1" class="custom-control-input">
+                                <label class="custom-control-label" for="girlRadio">Girl</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><b>Real Name</b></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="realName" required class="form-control" placeholder="Real name ...">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><b>Sicau Number</b></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="sicauId" class="form-control" placeholder="Sicau number ...">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><b>Email</b></label>
+                        <div class="col-sm-10">
+                            <input type="email" name="email" class="form-control" placeholder="Email ...">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><b>Telephone</b></label>
+                        <div class="col-sm-10">
+                            <input type="number" name="telephone" class="form-control" placeholder="Telephone ...">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><b>Website</b></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="website" class="form-control" placeholder="Website ...">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveUser()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Password Modal-->
+<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passwordModalTitle">Password Modal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="Password...">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="updatePassword()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../vendors/jquery/jquery-3.3.1.min.js"></script>
+<script src="../vendors/jquery/jquery.cookie.js"></script>
+<script src="../js/popper.min.js"></script>
+<script src="../vendors/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
+<script src="../vendors/jquery/jquery-confirm.min.js"></script>
+<script src="../vendors/bootstarp-table/bootstrap-table.min.js"></script>
+<script src="../vendors/bootstarp-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/p/user.js"></script>
+</body>
+</html>

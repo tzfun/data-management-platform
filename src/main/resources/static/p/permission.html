@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Homepage——Resource Platform</title>
+    <link rel="stylesheet" href="../vendors/bootstrap-4.0.0-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../vendors/jquery/jquery-confirm.min.css">
+    <link rel="stylesheet" href="../vendors/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../vendors/bootstarp-table/bootstrap-table.min.css">
+    <link rel="stylesheet" href="../css/common.css">
+
+    <link rel="shortcut icon" href="../images/icon/logo.png">
+    <style>
+        .node {
+            cursor: pointer;
+        }
+
+        .node circle {
+            fill: #fff;
+            stroke: steelblue;
+            stroke-width: 1.5px;
+        }
+
+        .node text {
+            font: 10px sans-serif;
+        }
+
+        .link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 1.5px;
+        }
+        .tree{
+            width: 100%;
+            height: 600px;
+            margin: 10px auto;
+        }
+        .tree svg{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<!--导航栏-->
+<nav class="navbar navbar-light navbar-expand-md" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="../index.html">
+        <img src="../images/icon/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        E Resource
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="../index.html">Home </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="../resource.html?t=article">Articles</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="../resource.html">Resources</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="../website.html">More link</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="../about.html">About</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0" action="../search.html" method="get">
+            <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <div class="btn-group" style="margin-right: 40px">
+            <button type="button" class="btn btn-link dropdown-toggle" id="headerInfoTitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Not Login
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" id="userInfoContainer">
+                <button class="dropdown-item" type="button" onclick="location.href='/p/homepage.html'">Homepage</button>
+                <button class="dropdown-item" type="button" onclick="login()">Login</button>
+            </div>
+        </div>
+    </div>
+</nav>
+<!--导航栏-->
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-11">
+            <div class="row">
+                <div class="col-md-3">
+                    <div style="padding: 20px 5px">
+                        <img src="../images/head.png" class="rounded mx-auto d-block" alt="...">
+                        <h1 class="display-4" style="text-align: center">Welcome!</h1>
+                    </div>
+                    <ul class="list-group list-group-flush" id="permissionButtonList">
+                        <!-- 公共权限部分-->
+                        <li class="list-group-item"><a href="homepage.html">Personal Center</a></li>
+                        <li class="list-group-item"><a href="personal-settings.html">Personal Settings</a></li>
+                        <li class="list-group-item"><a href="upload-resource.html">Upload Resource</a></li>
+                        <li class="list-group-item"><a href="write-articles.html">Write Articles</a></li>
+
+                        <!-- 权限分配部分 -->
+                        <!--
+                        <li class="list-group-item"><a href="user.html">Users Management</a></li>
+                        <li class="list-group-item"><a href="resource.html">Resource Management</a></li>
+                        <li class="list-group-item"><a href="permission.html">Permission Management</a></li>
+                        <li class="list-group-item"><a href="message.html">Messages Management</a></li>
+                        <li class="list-group-item"><a href="notice.html">Notice Management</a></li>
+                        <li class="list-group-item"><a href="system.html">System Settings</a></li>
+                        -->
+                    </ul>
+                </div>
+                <div class="col-md-9">
+                    <h1 class="display-4">Permission Manage</h1>
+                    <div class="row">
+                        <div class="tree" id="tree"></div>
+                    </div>
+                    <div class="row">
+                        <!-- 工具容器 -->
+                        <div id="toolbar" class="btn-group">
+                            <button type="button" class="btn btn-primary" onclick="addRole();">
+                                <i class="fa fa-plus" aria-hidden="true"></i>新增角色
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="addUserRole();">
+                                <i class="fa fa-plus" aria-hidden="true"></i>为用户分配角色
+                            </button>
+                        </div>
+                        <div class=table-responsive" style="    width: 100%;">
+                            <table id="userTable" class="table text-nowrap table-striped" style="width:100%"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="footer">
+    <div class="row justify-content-center" style="margin-right: 0">
+        <div class="row col-md-10 justify-content-center">
+            <div class="col-md-3 col-11">
+                <h4 class="footer-title">
+                    <img src="../images/icon/link.png" alt="" class="footer-img">
+                    Friendship link
+                </h4>
+                <ul>
+                    <li class="link-list">
+                        <a href="http://www.sicau.edu.cn" target="_blank">四川农业大学</a>
+                    </li>
+                    <li class="link-list">
+                        <a href="http://xxgc.sicau.edu.cn" target="_blank">信息工程学院</a>
+                    </li>
+                    <li class="link-list">
+                        <a href="http://www.wingstudio.org" target="_blank">WingStudio</a>
+                    </li>
+                    <li class="link-list">
+                        <a href="https://vr.beifengtz.com" target="_blank">VR360</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-11">
+                <h4 class="footer-title">
+                    <img src="../images/icon/link1.png" alt="" class="footer-img">
+                    Site link
+                </h4>
+                <ul>
+                    <li class="link-list">
+                        <a href="../index.html">Home</a>
+                    </li>
+                    <li class="link-list">
+                        <a href="../resource.html">Resource</a>
+                    </li>
+                    <li class="link-list">
+                        <a href="../about.html">About</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-11">
+                <h4 class="footer-title">
+                    <img src="../images/icon/about.png" alt="" class="footer-img">
+                    About
+                </h4>
+                <p class="footer-p" style="padding: 0 30px;">
+                    This is a resource management platform.Development of Information Engineering College of Sichuan Agricultural Uniersity.The platform is used for resource sharing.Here you can easily find the resource files you want.If you want to know more about the platform, please click
+                    <a href="../about.html"><u>more</u></a>
+                </p>
+            </div>
+            <div class="col-md-3 col-11">
+                <h4 class="footer-title">
+                    <img src="../images/icon/concat.png" alt="" class="footer-img">
+                    Concat
+                </h4>
+                <ul>
+                    <li class="link-list" style="margin:20px 0;">
+                        <a href="#">信息工程学院物联网工程系</a>
+                    </li>
+                    <li class="link-list" style="margin: 20px 0;">
+                        <a href="mailto:1246886075@qq.com">1246886075@qq.com</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <p class="copy-p">
+        &copy; CopyRight 2018 物联网工程系 | Powered By <a href="http://www.beifengtz.com">beifengtz</a>
+    </p>
+</footer>
+<!-- Permission Modal -->
+<div class="modal fade" id="permissionModal" tabindex="-1" role="dialog" aria-labelledby="permissionModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="permissionModalTitle">Permission Modal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="permissionSelectorForm">
+                    <div class="form-group">
+                        <label for="inputRoleName">Role Name</label>
+                        <input type="text" name="role_name" class="form-control" id="inputRoleName" required placeholder="Please input a role name.">
+
+                        <small class="form-text text-muted">You can give the character a name, such as 'admin'.<strong>But can't be 'sAdmin'</strong></small>
+                    </div>
+                    <div class="form-group">
+                        <label>Choose Permission (Total : <span id="permissionTotalNum">0</span>)</label>
+                        <div id="accordion">
+                            <!--用户资源选择框-->
+                            <div class="card">
+                                <div class="card-header" id="headingOne">
+                                    <h5 class="mb-0">
+                                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#resource_user" aria-expanded="true" aria-controls="resource_user">
+                                            User
+                                        </button>
+                                        <small class=" text-muted">Some permissions on user actions.</small>
+                                    </h5>
+                                </div>
+                                <div id="resource_user" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                    <div class="card-body row permission-selector">
+                                        <!--<div class="col-md-3">-->
+                                            <!--<div class="custom-control custom-checkbox">-->
+                                                <!--<input type="checkbox" class="custom-control-input" id="user_add">-->
+                                                <!--<label class="custom-control-label" for="user_add">add</label>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                            </div><!--用户资源选择框-->
+
+                            <!--资源选择框-->
+                            <div class="card">
+                                <div class="card-header" id="headingTwo">
+                                    <h5 class="mb-0">
+                                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#resource_resource" aria-expanded="true" aria-controls="resource_resource">
+                                            Resource
+                                        </button>
+                                        <small class=" text-muted">Some permissions on resource file upload and management.</small>
+                                    </h5>
+                                </div>
+                                <div id="resource_resource" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
+                                    <div class="card-body row permission-selector">
+                                    </div>
+                                </div>
+                            </div><!--资源选择框-->
+
+                            <!--文章选择框-->
+                            <div class="card">
+                                <div class="card-header" id="headingThree">
+                                    <h5 class="mb-0">
+                                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#resource_article" aria-expanded="true" aria-controls="resource_article">
+                                            Article
+                                        </button>
+                                        <small class=" text-muted">Some permission to publish and manage articles.</small>
+                                    </h5>
+                                </div>
+                                <div id="resource_article" class="collapse show" aria-labelledby="headingThree" data-parent="#accordion">
+                                    <div class="card-body row permission-selector">
+                                    </div>
+                                </div>
+                            </div><!--文章选择框-->
+
+                            <!--权限选择框-->
+                            <div class="card">
+                                <div class="card-header" id="headingFour">
+                                    <h5 class="mb-0">
+                                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#resource_permission" aria-expanded="true" aria-controls="resource_permission">
+                                            Permission
+                                        </button>
+                                        <small class=" text-muted">Some permission to assign, release, and query permissions.</small>
+                                    </h5>
+                                </div>
+                                <div id="resource_permission" class="collapse show" aria-labelledby="headingFour" data-parent="#accordion">
+                                    <div class="card-body row permission-selector">
+                                    </div>
+                                </div>
+                            </div><!--权限选择框-->
+
+                            <!--图片选择框-->
+                            <div class="card">
+                                <div class="card-header" id="headingFive">
+                                    <h5 class="mb-0">
+                                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#resource_image" aria-expanded="true" aria-controls="resource_image">
+                                            Image
+                                        </button>
+                                        <small class=" text-muted">If you want a user to be able to upload an image when uploading a resource or article, you must select this permission.</small>
+                                    </h5>
+                                </div>
+                                <div id="resource_image" class="collapse show" aria-labelledby="headingFive" data-parent="#accordion">
+                                    <div class="card-body row permission-selector">
+                                    </div>
+                                </div>
+                            </div><!--图片选择框-->
+
+                            <!--message选择框-->
+                            <div class="card">
+                                <div class="card-header" id="headingSix">
+                                    <h5 class="mb-0">
+                                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#resource_message" aria-expanded="true" aria-controls="resource_message">
+                                            Message
+                                        </button>
+                                        <small class=" text-muted">Some permissions on user messages, comments, and comments.</small>
+                                    </h5>
+                                </div>
+                                <div id="resource_message" class="collapse show" aria-labelledby="headingSix" data-parent="#accordion">
+                                    <div class="card-body row permission-selector"></div>
+                                </div>
+                            </div><!--message选择框-->
+
+                            <!--notice选择框-->
+                            <div class="card">
+                                <div class="card-header" id="headingSeven">
+                                    <h5 class="mb-0">
+                                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#resource_notice" aria-expanded="true" aria-controls="resource_notice">
+                                            Notice
+                                        </button>
+                                        <small class=" text-muted">Some permission to publish and manage system announcements.</small>
+                                    </h5>
+                                </div>
+                                <div id="resource_notice" class="collapse show" aria-labelledby="headingSeven" data-parent="#accordion">
+                                    <div class="card-body row">
+                                    </div>
+                                </div>
+                            </div><!--notice选择框-->
+
+                            <!--系统权限选择框-->
+                            <div class="card">
+                                <div class="card-header" id="headingEight">
+                                    <h5 class="mb-0">
+                                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#resource_system" aria-expanded="true" aria-controls="resource_system">
+                                            System
+                                        </button>
+                                        <small class=" text-muted">Some permissions on system parameter adjustments and system switches.</small>
+                                    </h5>
+                                </div>
+                                <div id="resource_system" class="collapse show" aria-labelledby="headingEight" data-parent="#accordion">
+                                    <div class="card-body row permission-selector">
+                                    </div>
+                                </div>
+                            </div><!--系统权限选择框-->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="uploadRole()">Add Role</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Role Modal -->
+<div class="modal fade" id="userRoleModal" tabindex="-1" role="dialog" aria-labelledby="userRoleModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userRoleModalTitle">User Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="inputRoleName">Choose Role</label>
+                    <select class="custom-select" id="roleSelector"></select>
+                </div>
+                <div class="form-group">
+                    <div class=table-responsive" style="width: 100%;">
+                        <table id="userInfoTable" class="table text-nowrap table-striped" style="width:100%"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="uploadUserRole()">Add Role</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit User Role Modal -->
+<div class="modal fade" id="editUserRoleModal" tabindex="-1" role="dialog" aria-labelledby="editUserRoleModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserRoleModalTitle">Edit User Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="inputRoleName">Choose Role</label>
+                    <select class="custom-select" id="editRoleSelector"></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="updateUserRole()">Save Change</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../vendors/jquery/jquery-3.3.1.min.js"></script>
+<script src="../vendors/jquery/jquery.cookie.js"></script>
+<script src="../js/popper.min.js"></script>
+<script src="../vendors/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
+<script src="../vendors/jquery/jquery-confirm.min.js"></script>
+<script src="../vendors/bootstarp-table/bootstrap-table.min.js"></script>
+<script src="../vendors/bootstarp-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/echarts.min.js"></script>
+<script src="../js/p/permission.js"></script>
+<!--<script src="../js/p/d3.min.js"></script>-->
+<!--<script src="../js/p/permissionTree.js"></script>-->
+</body>
+</html>

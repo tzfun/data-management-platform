@@ -1,0 +1,21 @@
+#resultContainer{
+    min-height: 400px;
+    margin: 20px 0;
+}
+.result-title{
+    display: inline-block;
+}
+.result-time{
+    text-align: right;
+    margin-right: 30px;
+    margin-top: 10px;
+}
+.result-list{
+    list-style-image: url("../images/icon/circlesradiant.png");
+}
+.result-type-container{
+    margin-left: 7px;
+}
+.result-total{
+    margin: 30px 0;
+}

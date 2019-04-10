@@ -1,0 +1,114 @@
+body{
+    background:#edfffa;
+    font-weight: 300;
+}
+.shadow{
+    box-shadow: 0px 10px 40px -10px rgba(0,64,128,0.2);
+}
+.footer{
+    overflow: hidden;
+    font-weight: 300;
+    padding-top: 80px;
+    background: #2c3848;
+    color:whitesmoke;
+}
+.footer-img{
+    width:35px;
+}
+.link-list{
+    list-style: none;
+    text-align: left;
+    margin: 20px 0;
+}
+.link-list a,.footer-p{
+    text-decoration: none;
+    color: #abdde5;
+}
+.link-list a:hover,.footer-p a:hover{
+    color: white;
+}
+.footer-p a{
+    font-style: oblique;
+    color: #abdde5;
+}
+.copy-p{
+    margin: 60px 0;
+    text-align: center;
+    color: #7dd8c7;
+}
+.copy-p a{
+    color: whitesmoke;
+}
+.copy-p a:hover{
+    color: white;
+}
+.card-container{
+    margin: 20px 0;
+}
+.card-list{
+    border-bottom: 1px solid #8bd5cb;
+}
+h1,h2,h3,h4,h5,h6{
+    font-weight: 300;
+}
+/*PC*/
+@media screen and (min-width: 900px){
+    h1,.h1{
+        font-size: 38px!important;
+    }
+    h2,.h2{
+        font-size: 34px!important;
+    }
+    h3,.h3{
+        font-size: 30px!important;
+    }
+    h4,.h4{
+        font-size: 26px!important;
+    }
+    h5,.h5{
+        font-size: 22px!important;
+    }
+    h6,.h6{
+        font-size: 18px!important;
+    }
+}
+/*手机*/
+@media screen and (max-width: 899px){
+    h1,.h1{
+        font-size: 30px!important;
+    }
+    h2,.h2{
+        font-size: 27px!important;
+    }
+    h3,.h3{
+        font-size: 24px!important;
+    }
+    h4,.h4{
+        font-size: 21px!important;
+    }
+    h5,.h5{
+        font-size: 18px!important;
+    }
+    h6,.h6{
+        font-size: 15px!important;
+    }
+}
+.ck-content h1, .ck-content h2, .ck-content h3, .ck-content h4, .ck-content h5, .ck-content h6 {
+    margin: 15px 0;
+    font-weight: 300;
+}
+.ck-content h1::before, .ck-content h2::before, .ck-content h3::before, .ck-content h4::before, .ck-content h5::before, .ck-content h6::before {
+    top: 0;
+    left: -15px;
+    content: '#';
+    color: #6fa3ef;
+}
+.ck-content{
+    font-weight: 300;
+}
+.ck-content li{
+    margin: 10px 0;
+}
+.footer-title{
+    font-weight: 300;
+}

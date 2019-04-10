@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="demo.sicau.datamanagementplatform.dao.ArticleDao">
+
+    <resultMap id="ArticleListMap" type="demo.sicau.datamanagementplatform.entity.POJO.VO.ArticleListVO">
+        <collection property="author" ofType="demo.sicau.datamanagementplatform.entity.DTO.User">
+            <id column="author_id" jdbcType="VARCHAR" property="id"/>
+            <result column="author_real_name" jdbcType="VARCHAR" property="realName"/>
+            <result column="author_sicau_id" jdbcType="VARCHAR" property="sicauId"/>
+            <result column="author_account" jdbcType="VARCHAR" property="account"/>
+        </collection>
+        <collection property="article" ofType="demo.sicau.datamanagementplatform.entity.POJO.PO.ArticlePO">
+            <id column="article_id" jdbcType="VARCHAR" property="id"/>
+            <result column="article_title" jdbcType="VARCHAR" property="title"/>
+            <result column="article_summary" jdbcType="VARCHAR" property="summary"/>
+            <result column="article_create" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="article_update" jdbcType="TIMESTAMP" property="updateTime"/>
+            <result column="article_see_num" jdbcType="INTEGER" property="seeNum"/>
+        </collection>
+    </resultMap>
+
+    <insert id="insertArticle" parameterType="demo.sicau.datamanagementplatform.entity.DTO.Article">
+        insert into article_tb(id,title,summary,content
+        <if test="article.tags.size() != 0">
+            ,tags
+        </if>
+        ,user_id
+        )
+        values (#{article.id},#{article.title},#{article.summary},#{article.content}
+        <if test="article.tags.size() != 0">
+            ,#{article.strTags}
+        </if>
+        ,#{userId}
+        )
+    </insert>
+    <update id="updateSeeNum">
+        update article_tb set see_num = see_num + 1 where id=#{id}
+    </update>
+    <update id="updatePassStatus">
+        update article_tb set has_pass = #{hasPass} where id = #{id}
+    </update>
+    <update id="updateArticle">
+        update article_tb set
+        id = #{article.id},title = #{article.title},summary = #{article.summary},content=#{article.content},
+        update_time=current_timestamp(),
+        tags =
+        <choose>
+            <when test="article.tags.size() !=0">
+                #{article.strTags}
+            </when>
+            <otherwise>
+                null
+            </otherwise>
+        </choose>
+        where id = #{article.id}
+    </update>
+    <delete id="deleteArticleById">
+        delete from article_tb where id = #{id}
+    </delete>
+    <select id="selectById" resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.ArticlePO">
+        select *,tags as str_tags from article_tb where id = #{id}
+    </select>
+    <select id="selectArticleByPaging"
+            resultType="demo.sicau.datamanagementplatform.entity.POJO.VO.ArticleListVO" resultMap="ArticleListMap">
+        select article.id as article_id,article.title as article_title,
+        article.summary as article_summary,article.create_time as article_create,
+        article.update_time as article_update,author.id as author_id,
+        article.see_num as article_see_num,
+        author.real_name as author_real_name,author.sicau_id as author_sicau_id,
+        author.account as author_account
+        from article_tb as article join user_tb as author
+        on article.user_id = author.id and article.has_pass = 1
+        order by article.create_time desc
+        limit #{page},#{pageSize}
+    </select>
+    <select id="countArticlesHasPass" resultType="java.lang.Integer">
+        select count(id) from article_tb where has_pass = 1;
+    </select>
+    <select id="selectArticleByUserId" resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.ArticlePO">
+        select * from article_tb where user_id = #{userId} order by create_time desc
+    </select>
+    <select id="countArticlesByUserId" resultType="java.lang.Integer">
+        select count(id) from article_tb where user_id=#{userId}
+    </select>
+    <select id="selectAllArticles" resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.ArticlePO">
+        select * from article_tb order by create_time desc limit #{page},#{pageSize}
+    </select>
+    <select id="countArticles" resultType="java.lang.Integer">
+        select count(id) from article_tb;
+    </select>
+</mapper>

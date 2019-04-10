@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="demo.sicau.datamanagementplatform.dao.PermissionDao">
+
+    <resultMap id="RolePermissionMap" type="demo.sicau.datamanagementplatform.entity.POJO.VO.RolePermissionVO">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <collection property="role" ofType="demo.sicau.datamanagementplatform.entity.DTO.Role">
+            <id column="role_id" jdbcType="VARCHAR" property="id"/>
+            <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        </collection>
+        <collection property="permission" ofType="demo.sicau.datamanagementplatform.entity.DTO.Permission">
+            <id column="per_id" jdbcType="VARCHAR" property="id"/>
+            <result column="per_src" jdbcType="VARCHAR" property="resource"/>
+            <result column="per_act" jdbcType="VARCHAR" property="action"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="UserRoleMap" type="demo.sicau.datamanagementplatform.entity.POJO.VO.UserRoleVO">
+        <id column="u_r_id" jdbcType="VARCHAR" property="id"/>
+        <collection property="user" ofType="demo.sicau.datamanagementplatform.entity.POJO.PO.UserPO">
+            <id column="id" jdbcType="VARCHAR" property="id"/>
+            <result column="account" jdbcType="VARCHAR" property="account"/>
+            <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+            <result column="sicau_id" jdbcType="VARCHAR" property="sicauId"/>
+            <result column="email" jdbcType="VARCHAR" property="email"/>
+            <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+            <result column="website" jdbcType="VARCHAR" property="website"/>
+            <result column="create_time" jdbcType="TIMESTAMP" javaType="String" property="createTime"/>
+            <result column="update_time" jdbcType="TIMESTAMP" javaType="String" property="updateTime"/>
+            <result column="sex" jdbcType="BOOLEAN" property="sex"/>
+        </collection>
+        <collection property="role" ofType="demo.sicau.datamanagementplatform.entity.DTO.Role">
+            <id column="r_id" jdbcType="VARCHAR" property="id"/>
+            <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        </collection>
+    </resultMap>
+    <insert id="insertRole" parameterType="demo.sicau.datamanagementplatform.entity.DTO.Role">
+        insert into role_tb values(#{role.id},#{role.roleName},current_timestamp())
+    </insert>
+    <insert id="insertRolePermission" parameterType="demo.sicau.datamanagementplatform.entity.POJO.PO.RolePermissionPO">
+        insert into role_permission_tb values
+        <foreach collection="rolePermissions" item="rolePermission" separator=",">
+            (#{rolePermission.id},#{rolePermission.roleId},#{rolePermission.permissionId})
+        </foreach>;
+    </insert>
+    <insert id="insertUserRole">
+        insert into user_role_tb values (#{id},#{uid},#{role},current_timestamp())
+    </insert>
+    <update id="updateUserRole">
+        update user_role_tb set role_id = #{role} where user_id=#{uid}
+    </update>
+    <delete id="delUserAndRole">
+        delete from user_role_tb where user_id=#{id}
+    </delete>
+    <select id="listByUserId" resultType="demo.sicau.datamanagementplatform.entity.DTO.Permission">
+        SELECT DISTINCT p.*
+        FROM permission_tb p
+            JOIN(
+                    SELECT r_p.*
+                    FROM role_permission_tb r_p
+                        JOIN(
+                                SELECT r.*
+                                FROM role_tb r
+                                    JOIN user_role_tb u_r
+                                        ON r.`id` = u_r.`role_id`
+                                WHERE u_r.`user_id` = #{userId}
+                            ) r
+                            ON r_p.`role_id` = r.id
+                ) r_p
+                ON p.`id` = r_p.permission_id
+    </select>
+    <select id="selectRolePermission"
+            resultType="demo.sicau.datamanagementplatform.entity.POJO.VO.RolePermissionVO"
+    resultMap="RolePermissionMap">
+       select r_p.id as id,r.id as role_id,r.role_name as role_name,p.id as per_id,
+       p.resource as per_src,p.action as per_act
+       from role_tb as r join role_permission_tb as r_p on r_p.role_id = r.id
+                  join permission_tb as p on r_p.permission_id = p.id;
+    </select>
+    <select id="selectUserRole" resultType="demo.sicau.datamanagementplatform.entity.POJO.VO.UserRoleVO" resultMap="UserRoleMap">
+        select u_r.id as u_r_id, u.*,r.id as r_id,r.role_name as role_name
+        from user_tb as u join user_role_tb as u_r on u_r.user_id = u.id
+        join role_tb as r on u_r.role_id = r.id
+        order by u.create_time
+    </select>
+    <select id="selectRoleByUserRoleId" resultType="demo.sicau.datamanagementplatform.entity.DTO.Role">
+        select r.* from user_role_tb as u_r join role_tb as r on u_r.role_id = r.id and u_r.user_id=#{id}
+    </select>
+    <select id="selectPermissions" resultType="demo.sicau.datamanagementplatform.entity.DTO.Permission">
+        select * from permission_tb order by action;
+    </select>
+    <select id="selectAllRole" resultType="demo.sicau.datamanagementplatform.entity.DTO.Role">
+        select * from role_tb order by create_time desc;
+    </select>
+    <select id="selectUserRoleByUserId"
+            resultType="demo.sicau.datamanagementplatform.entity.POJO.PO.UserRolePO">
+        select * from user_role_tb where user_id = #{uid}
+    </select>
+    <select id="selectRoleByRoleId" resultType="demo.sicau.datamanagementplatform.entity.DTO.Role">
+        select * from role_tb where id = #{roleId}
+    </select>
+</mapper>

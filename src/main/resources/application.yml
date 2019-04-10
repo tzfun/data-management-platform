@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: wmt
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy/MM/dd HH:mm:ss
+server:
+  connection-timeout: 3600s
+  jetty:
+    accesslog:
+      time-zone: GMT+8
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mapper/*.xml
+file:
+  img:
+    allow-type: png|jpg|jpeg|gif # 允许的类型
+    allow-size: 3 #允许的最大大小，单位M
+  resource:
+    allow-type: zip|png|jpg|jpeg|ppt|pptx|doc|docx|exce|xls|xlsx|mp2|mp3|mp4|json|txt|pdf|svg|exe # 允许的类型
+    allow-size: 1024 #允许的最大大小，单位M

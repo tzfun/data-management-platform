@@ -1,0 +1,33 @@
+body,html{
+    margin: 0;
+    padding: 0;
+    background: #d1f4fa;
+}
+.login-box{
+    padding: 25px 15px;
+    box-shadow: 0 0 15px 2px rgba(0,0,0,0.1);
+    margin-top: 60px;
+    background: white;
+}
+.input-group{
+    padding: 20px;
+}
+.beifeng-input{
+    transition: box-shadow 0.5s ease 0s, border-color 0.25s ease-in-out 0s;
+    padding-left: 8px;
+    outline: none;
+    border: 1px solid #ced4da;
+    height: 38px;
+}
+.beifeng-input:focus{
+    background-color: rgb(254, 254, 254);
+    box-shadow: rgb(202, 202, 202) 0px 0px 5px;
+    outline: none;
+    border:1px  solid  rgb(138, 138, 138);
+    border-image: initial;
+    transition: box-shadow 0.5s ease 0s, border-color 0.25s ease-in-out 0s;
+}
+.beifeng-button{
+    border-radius: 0;
+    width: 100%;
+}
