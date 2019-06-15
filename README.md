@@ -5,7 +5,9 @@
 一个服务于学生和老师资源管理平台，方便学校师生的资源分享、作品展示、公告通知。项目基于Springboot + Bootstrap实现，后台服务着力于权限、安全、文件管理等方面，全部页面基于响应式设计。
 
 ## 演示地址
-[resource.beifengtz.com](http://resource.beifengtz.com)
+* [resource.beifengtz.com](http://resource.beifengtz.com)
+ * 测试账号：test
+ * 密码：test123456
 
 ## 技术栈
 * 后台：
